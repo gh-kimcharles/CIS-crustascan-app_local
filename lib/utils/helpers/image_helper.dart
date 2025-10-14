@@ -7,25 +7,33 @@ class ImageHelper {
   /// Returns the full URL for any image path
   static String getImageUrl(String imagePath) {
     if (imagePath.isEmpty) {
+      debugPrint('⚠️ ImageHelper: Empty image path');
       return 'assets/images/user/default_profile.png';
     }
 
     // Full URL
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      debugPrint('✅ ImageHelper: Full URL detected: $imagePath');
       return imagePath;
     }
 
-    // Server path
+    // Server path - THIS IS THE KEY FIX
     if (imagePath.startsWith('/uploads/')) {
-      return '${AppConfig.apiBaseUrl}$imagePath';
+      final fullUrl = '${AppConfig.baseUrl}$imagePath';
+      debugPrint('✅ ImageHelper: Server path converted to: $fullUrl');
+      return fullUrl;
     }
 
     // Asset path
     if (imagePath.startsWith('assets/')) {
+      debugPrint('✅ ImageHelper: Asset path: $imagePath');
       return imagePath;
     }
 
     // Default fallback
+    debugPrint(
+      '⚠️ ImageHelper: Unknown path format, using default: $imagePath',
+    );
     return 'assets/images/user/default_profile.png';
   }
 
@@ -42,7 +50,7 @@ class ImageHelper {
         final bytes = base64Decode(base64Data);
         return MemoryImage(bytes);
       } catch (e) {
-        debugPrint('Error decoding base64 image: $e');
+        debugPrint('❌ Error decoding base64 image: $e');
         return const AssetImage('assets/images/user/default_profile.png');
       }
     }
@@ -52,6 +60,7 @@ class ImageHelper {
         imagePath.startsWith('https://') ||
         imagePath.startsWith('/uploads/')) {
       final url = getImageUrl(imagePath);
+      debugPrint('🌐 Loading network image: $url');
       return NetworkImage(url);
     }
 
@@ -60,7 +69,7 @@ class ImageHelper {
       try {
         return FileImage(File(imagePath));
       } catch (e) {
-        debugPrint('Error loading file image: $e');
+        debugPrint('❌ Error loading file image: $e');
         return const AssetImage('assets/images/user/default_profile.png');
       }
     }
@@ -95,11 +104,13 @@ class ImageHelper {
           width: width,
           height: height,
           fit: fit,
-          errorBuilder: (context, error, stackTrace) =>
-              errorWidget ?? _defaultErrorWidget(width, height),
+          errorBuilder: (context, error, stackTrace) {
+            debugPrint('❌ Base64 image error: $error');
+            return errorWidget ?? _defaultErrorWidget(width, height);
+          },
         );
       } catch (e) {
-        debugPrint('Error decoding base64: $e');
+        debugPrint('❌ Error decoding base64: $e');
         return errorWidget ?? _defaultErrorWidget(width, height);
       }
     }
@@ -109,7 +120,7 @@ class ImageHelper {
         imagePath.startsWith('https://') ||
         imagePath.startsWith('/uploads/')) {
       final url = getImageUrl(imagePath);
-      debugPrint('Loading image from: $url');
+      debugPrint('🌐 Building network image widget: $url');
 
       return Image.network(
         url,
@@ -117,11 +128,16 @@ class ImageHelper {
         height: height,
         fit: fit,
         errorBuilder: (context, error, stackTrace) {
-          debugPrint('Failed to load image: $url - Error: $error');
+          debugPrint('❌ Failed to load image: $url');
+          debugPrint('❌ Error: $error');
+          debugPrint('❌ StackTrace: $stackTrace');
           return errorWidget ?? _defaultErrorWidget(width, height);
         },
         loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
+          if (loadingProgress == null) {
+            debugPrint('✅ Image loaded successfully: $url');
+            return child;
+          }
           return SizedBox(
             width: width,
             height: height,
@@ -131,6 +147,7 @@ class ImageHelper {
                     ? loadingProgress.cumulativeBytesLoaded /
                           loadingProgress.expectedTotalBytes!
                     : null,
+                strokeWidth: 2,
               ),
             ),
           );
@@ -145,8 +162,10 @@ class ImageHelper {
         width: width,
         height: height,
         fit: fit,
-        errorBuilder: (context, error, stackTrace) =>
-            errorWidget ?? _defaultErrorWidget(width, height),
+        errorBuilder: (context, error, stackTrace) {
+          debugPrint('❌ File image error: $error');
+          return errorWidget ?? _defaultErrorWidget(width, height);
+        },
       );
     }
 
@@ -156,8 +175,10 @@ class ImageHelper {
       width: width,
       height: height,
       fit: fit,
-      errorBuilder: (context, error, stackTrace) =>
-          errorWidget ?? _defaultErrorWidget(width, height),
+      errorBuilder: (context, error, stackTrace) {
+        debugPrint('❌ Asset image error: $error');
+        return errorWidget ?? _defaultErrorWidget(width, height);
+      },
     );
   }
 
@@ -169,10 +190,20 @@ class ImageHelper {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Icon(
-        Icons.image_not_supported,
-        color: Colors.grey.shade400,
-        size: 24,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.image_not_supported,
+            color: Colors.grey.shade400,
+            size: 24,
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Failed',
+            style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
+          ),
+        ],
       ),
     );
   }
