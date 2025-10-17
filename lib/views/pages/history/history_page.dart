@@ -92,7 +92,7 @@ class _HistoryPageState extends State<HistoryPage> with ConnectionMonitorMixin {
       appBar: GlobalAppBar(text: 'History', navigatePage: HomePage()),
       body: Column(
         children: [
-          NetworkTestWidget(),
+          //NetworkTestWidget(),
           Expanded(
             child: hasConnection
                 ? _buildHistoryContent()
@@ -332,101 +332,101 @@ class DeleteHistoryModalSheetButton extends StatelessWidget {
   }
 }
 
-class NetworkTestWidget extends StatefulWidget {
-  const NetworkTestWidget({super.key});
-
-  @override
-  State<NetworkTestWidget> createState() => _NetworkTestWidgetState();
-}
-
-class _NetworkTestWidgetState extends State<NetworkTestWidget> {
-  String _status = 'Testing...';
-  Color _statusColor = Colors.orange;
-
-  @override
-  void initState() {
-    super.initState();
-    _testConnection();
-  }
-
-  Future<void> _testConnection() async {
-    try {
-      debugPrint('🔍 Testing connection to: ${AppConfig.baseUrl}');
-
-      // Test 1: Health check
-      final healthResponse = await http
-          .get(Uri.parse('${AppConfig.baseUrl}/health'))
-          .timeout(Duration(seconds: 5));
-
-      if (healthResponse.statusCode == 200) {
-        debugPrint('✅ Health check passed');
-
-        // Test 2: Try to fetch an actual image
-        final testImageUrl =
-            '${AppConfig.baseUrl}/uploads/history_2a2cc608-2439-47d2-8d32-83af57229e7a_f9312985.jpg';
-        debugPrint('🔍 Testing image URL: $testImageUrl');
-
-        final imageResponse = await http
-            .get(Uri.parse(testImageUrl))
-            .timeout(Duration(seconds: 5));
-
-        if (imageResponse.statusCode == 200) {
-          debugPrint('✅ Image fetch successful');
-          setState(() {
-            _status = '✅ Connected!\nBase: ${AppConfig.baseUrl}';
-            _statusColor = Colors.green;
-          });
-        } else {
-          debugPrint('❌ Image fetch failed: ${imageResponse.statusCode}');
-          setState(() {
-            _status =
-                '⚠️ API OK, but image failed\nStatus: ${imageResponse.statusCode}';
-            _statusColor = Colors.orange;
-          });
-        }
-      } else {
-        debugPrint('❌ Health check failed: ${healthResponse.statusCode}');
-        setState(() {
-          _status = '❌ API Error: ${healthResponse.statusCode}';
-          _statusColor = Colors.red;
-        });
-      }
-    } catch (e) {
-      debugPrint('❌ Connection test failed: $e');
-      setState(() {
-        _status = '❌ Cannot reach server\n${AppConfig.baseUrl}\nError: $e';
-        _statusColor = Colors.red;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: _statusColor.withOpacity(0.1),
-        border: Border.all(color: _statusColor),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Network Status',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          SizedBox(height: 8),
-          Text(
-            _status,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12),
-          ),
-          SizedBox(height: 8),
-          ElevatedButton(onPressed: _testConnection, child: Text('Test Again')),
-        ],
-      ),
-    );
-  }
-}
+// class NetworkTestWidget extends StatefulWidget {
+//   const NetworkTestWidget({super.key});
+//
+//   @override
+//   State<NetworkTestWidget> createState() => _NetworkTestWidgetState();
+// }
+//
+// class _NetworkTestWidgetState extends State<NetworkTestWidget> {
+//   String _status = 'Testing...';
+//   Color _statusColor = Colors.orange;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _testConnection();
+//   }
+//
+//   Future<void> _testConnection() async {
+//     try {
+//       debugPrint('🔍 Testing connection to: ${AppConfig.baseUrl}');
+//
+//       // Test 1: Health check
+//       final healthResponse = await http
+//           .get(Uri.parse('${AppConfig.baseUrl}/health'))
+//           .timeout(Duration(seconds: 5));
+//
+//       if (healthResponse.statusCode == 200) {
+//         debugPrint('✅ Health check passed');
+//
+//         // Test 2: Try to fetch an actual image
+//         final testImageUrl =
+//             '${AppConfig.baseUrl}/uploads/history_2a2cc608-2439-47d2-8d32-83af57229e7a_f9312985.jpg';
+//         debugPrint('🔍 Testing image URL: $testImageUrl');
+//
+//         final imageResponse = await http
+//             .get(Uri.parse(testImageUrl))
+//             .timeout(Duration(seconds: 5));
+//
+//         if (imageResponse.statusCode == 200) {
+//           debugPrint('✅ Image fetch successful');
+//           setState(() {
+//             _status = '✅ Connected!\nBase: ${AppConfig.baseUrl}';
+//             _statusColor = Colors.green;
+//           });
+//         } else {
+//           debugPrint('❌ Image fetch failed: ${imageResponse.statusCode}');
+//           setState(() {
+//             _status =
+//                 '⚠️ API OK, but image failed\nStatus: ${imageResponse.statusCode}';
+//             _statusColor = Colors.orange;
+//           });
+//         }
+//       } else {
+//         debugPrint('❌ Health check failed: ${healthResponse.statusCode}');
+//         setState(() {
+//           _status = '❌ API Error: ${healthResponse.statusCode}';
+//           _statusColor = Colors.red;
+//         });
+//       }
+//     } catch (e) {
+//       debugPrint('❌ Connection test failed: $e');
+//       setState(() {
+//         _status = '❌ Cannot reach server\n${AppConfig.baseUrl}\nError: $e';
+//         _statusColor = Colors.red;
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       // margin: EdgeInsets.all(16),
+//       // padding: EdgeInsets.all(16),
+//       // decoration: BoxDecoration(
+//       //   color: _statusColor.withOpacity(0.1),
+//       //   border: Border.all(color: _statusColor),
+//       //   borderRadius: BorderRadius.circular(12),
+//       ),
+//       // child: Column(
+//       //   mainAxisSize: MainAxisSize.min,
+//       //   children: [
+//       //     Text(
+//       //       'Network Status',
+//       //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//       //     ),
+//       //     SizedBox(height: 8),
+//       //     Text(
+//       //       _status,
+//       //       textAlign: TextAlign.center,
+//       //       style: TextStyle(fontSize: 12),
+//       //     ),
+//       //     SizedBox(height: 8),
+//       //     ElevatedButton(onPressed: _testConnection, child: Text('Test Again')),
+//       //   ],
+//       // ),
+//     );
+//   }
+// }
