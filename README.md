@@ -6,7 +6,7 @@
 
 > A locally-runnable version of the CrustaScan Flutter application, migrated from Firebase to PostgreSQL for offline/self-hosted use.
 
-This is the local frontend repository for the **CIS (Crustaceans Identifier System)**, a thesis project developed at **Holy Angel University, School of Computing**, under the Computer Science program.
+This is the local frontend repository for the **CIS (Crustaceans Identifier System)**, a thesis project under the Computer Science program.
 
 > **Note:** This is the local version of the app. The original cloud-based version (Firebase + AWS) is no longer active. This repository was created so students can run the full system locally using Docker.
 
@@ -236,12 +236,7 @@ It is **recommended to build your own APK** (Step 4 above) to connect to your lo
 
 ## Authors
 
-Developed as a thesis project at **Holy Angel University — School of Computing**
-
-- Kobe Lester D. Cruz
-- Kim Charles M. De Guzman
-- Alfred Anthony J. Lapuz
-- Djohn Paul A. Turla
+Local version of the CrustaScan (Mobile App) by Kim Charles M. De Guzman, migrated from Firebase to PostgreSQL and containerized with Docker for self-hosted use.
 
 ---
 
