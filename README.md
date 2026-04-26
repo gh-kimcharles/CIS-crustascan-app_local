@@ -141,7 +141,7 @@ flutter doctor
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Step 1: Clone the repository
 
