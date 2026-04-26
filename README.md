@@ -40,7 +40,7 @@ CrustaScan identifies crustacean species by capturing or uploading an image. Thi
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer      | Technology                          |
 | ---------- | ----------------------------------- |
@@ -106,7 +106,7 @@ Displays the identified crustacean species along with its details and save modal
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before running the app, make sure you have the following installed:
 
@@ -234,7 +234,7 @@ It is **recommended to build your own APK** (Step 4 above) to connect to your lo
 
 ---
 
-## 👨 Authors
+## Authors
 
 Developed as a thesis project at **Holy Angel University — School of Computing**
 
@@ -245,6 +245,6 @@ Developed as a thesis project at **Holy Angel University — School of Computing
 
 ---
 
-## 📄 License
+## License
 
 This project was developed for academic purposes as part of a Computer Science thesis at Holy Angel University.
